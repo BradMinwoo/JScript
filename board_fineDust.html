@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset='utf-8'>
+<title>NextIT</title>
+<link rel="icon" type="image/x-icon" href="./images/nextit_log.jpg" />
+<link rel="stylesheet" type="text/css"  href="./css/header.css">
+<link rel="stylesheet" type="text/css"  href="./css/footer.css">
+<link rel="stylesheet" type="text/css"  href="./css/style_boardList.css">
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<style>
+.button_div{
+    width: 1000px;
+    text-align: right;
+    margin-top:20px;
+}
+</style>
+<script>
+$(function(){
+	$(".top_nav").load("/sample01_ajax/header.do");
+	$("#page_footer").load("/sample01_ajax/footer.do");
+//  http://apis.data.go.kr/B552584/UlfptcaAlarmInqireSvc/getUlfptcaAlarmInfo?year=2020&pageNo=1&numOfRows=100&returnType=json&serviceKey=xiTmMVXW1wjiW4wr6DW7T1SJDFUA0STAtlfgl49f%2F6dqmHAcwDVL7U3LC%2BY%2FCoTd9RiyqTPmPU1YpV2s7mNx1w%3D%3D
+		
+		$.ajax({
+			type : "get",
+// 			url:"http://apis.data.go.kr/B552584/UlfptcaAlarmInqireSvc/getUlfptcaAlarmInfo?year=2020&pageNo=1&numOfRows=100&returnType=json&serviceKey=xiTmMVXW1wjiW4wr6DW7T1SJDFUA0STAtlfgl49f%2F6dqmHAcwDVL7U3LC%2BY%2FCoTd9RiyqTPmPU1YpV2s7mNx1w%3D%3D",
+			url:"/sample01_ajax/fineDust_json.do",
+// 			dateType :'json',
+			success:function(data){
+				alert("성공");
+				console.log("data", data);
+				let fine_dust = JSON.parse(data);
+				console.log("fine_dust", fine_dust);
+				
+				fine_dust = fine_dust.response.body.items;
+				console.log("fine_dust.length : " , fine_dust.length);
+				
+			 	insertHTML ="";
+
+			 	Date today = new Date();
+			 	string today_date = today;
+			 	
+			 	
+				for(let i =0 ; i<9;i++){
+				 	insertHTML +="<tr>";
+				 	insertHTML +="<td>"+(i+1)+"</td>";
+				 	insertHTML +="<td>"+fine_dust[i].distritcName+"</td>";
+				 	insertHTML +="<td>"+fine_dust[i].moveName+"</td>";
+				 	insertHTML +="<td>"+fine_dust[i].issueDate+"</td>";
+				 	insertHTML +="<td>"+fine_dust[i].issueGbn+"</td>";
+				 	insertHTML +="<td>"+fine_dust[i].issueVal+"</td>";
+					insertHTML +="</tr>";
+				}
+				$("#div_table > table > tbody").html(insertHTML);
+				
+			},
+			error:function(e){
+				alert("실패");
+				console.log("e.status", e.status);
+			},
+			
+			
+		});
+		
+		
+});
+
+
+		
+		
+		
+		</script>
+</head>
+<body>
+    <div class="wrap">
+        <div class="header">
+            <div class="top_nav">
+                <!-- header영역 -->
+			</div>
+        </div>
+		<!-- header e -->
+
+        <div class="intro_bg">
+            <div class="intro_text">
+                <h1>NextIT</h1>
+                <h4>넥스트아이티</h4>
+            </div>
+        </div>
+        <!-- intro_bg e -->
+
+        <!-- 전체 영역잡기 -->
+		<div class="contents"> 
+			<div id="div_fineDust">
+				<div id="div_table">
+					<table>
+						<thead>
+							<tr>
+								<th>NO</th>
+								<th>지역</th>
+								<th>검측장소</th>
+								<th>일시</th>
+								<th>구분</th>
+								<th>수치</th>
+							</tr>
+						</thead>
+						<tbody>
+						<!-미세먼지 리스트-  -->
+						</tbody>
+					</table>
+				</div>
+			</div>
+        </div>
+         
+         
+        <footer id="page_footer">
+			<!-- footer영역 -->
+        </footer>
+    </div>
+</body>
+</html>     

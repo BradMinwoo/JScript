@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset='utf-8'>
+<title>NextIT</title>
+<link rel="icon" type="image/x-icon" href="./images/nextit_log.jpg" />
+<link rel="stylesheet" type="text/css"  href="./css/header.css">
+<link rel="stylesheet" type="text/css"  href="./css/footer.css">
+<link rel="stylesheet" type="text/css"  href="./css/style_boardList.css">
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script>
+$(function(){
+	$(".top_nav").load("/sample01_ajax/header.do");
+	$("#page_footer").load("/sample01_ajax/footer.do");
+	
+	
+	$.ajax({
+		type:"GET",
+		url:"http://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=0b1750c5f1572f947e86ba785d938589&targetDt=20120101",
+		dataType:'json',
+		success:function(data){
+// 			alert("success");
+// 			console.log("data",data);
+			let movie_list = data.boxOfficeResult;
+// 			console.log("movie_list",movie_list);
+			let movie_array = movie_list.dailyBoxOfficeList;
+			console.log("movie_array",movie_array);
+			
+			let index = 1;
+			let insertHTML = "";
+			movie_array.forEach(element => {
+				insertHTML += "<tr>";
+				insertHTML += "<td>" + index +"</td>";
+				insertHTML += "<td>" + element.movieNm +"</td>";
+				insertHTML += "</tr>";
+				index++;
+			});
+			console.log("insertHTML",insertHTML);
+			$("#div_table tbody").html(insertHTML);
+			
+		},
+		error:function(){
+			alert("error");
+		}
+	});
+	
+	
+});
+</script>
+</head>
+<body>
+    <div class="wrap">
+        <div class="header">
+            <div class="top_nav">
+                <!-- header영역 -->
+			</div>
+        </div>
+		<!-- header e -->
+
+        <div class="intro_bg">
+            <div class="intro_text">
+                <h1>NextIT</h1>
+                <h4>넥스트아이티</h4>
+            </div>
+        </div>
+        <!-- intro_bg e -->
+
+        <!-- 전체 영역잡기 -->
+		<div class="contents"> 
+					<div class="div_movie">
+				<div id="div_table">
+					<table>
+						<colgroup>
+							<col width="100">
+							<col width="?">
+						</colgroup>
+						<thead>
+							<tr>
+								<th>No</th>
+								<th>제목</th>
+							</tr>
+						</thead>
+						<tbody>
+							<!-- 영화리스트 -->
+							
+						</tbody>
+					</table>
+				</div>
+			</div>
+        </div>
+         
+         
+        <footer id="page_footer">
+			<!-- footer영역 -->
+        </footer>
+    </div>
+</body>
+
+</html>     
